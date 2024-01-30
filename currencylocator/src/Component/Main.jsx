@@ -4,6 +4,8 @@ import './main.css';
 const Main = () => {
   const [state, setState] = useState('');
   const [countries, setCountries] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
     fetchData();
@@ -18,16 +20,30 @@ const Main = () => {
       console.error('Error fetching data:', error);
     }
   };
-
-
-  const filteredCountries = countries.filter((e) =>
-    e.currencies
-      ? Object.keys(e.currencies).some(
+  //Filter
+  const filteredCountries = countries.filter((country) =>
+    country.currencies
+      ? Object.keys(country.currencies).some(
           (currencyCode) =>
             currencyCode.toLowerCase().includes(state.toLowerCase())
         )
       : false
   );
+
+  // Calculate the index range for the current page
+  const indexOfLastCountry = currentPage * itemsPerPage;
+  const indexOfFirstCountry = indexOfLastCountry - itemsPerPage;
+  const currentCountries = filteredCountries.slice(
+    indexOfFirstCountry,
+    indexOfLastCountry
+  );
+
+  // Change page
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= Math.ceil(filteredCountries.length / itemsPerPage)) {
+      setCurrentPage(newPage);
+    }
+  };
 
   return (
     <div>
@@ -39,12 +55,16 @@ const Main = () => {
       />
 
       <h1>Country Information</h1>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
-        {filteredCountries?.map((e, index) => (
-          <div key={index}>
+      <div className="country-grid">
+        {currentCountries?.map((e, index) => (
+          <div key={index} className="country-card">
             <h2>{e.name.common}</h2>
             {e.flags && (
-              <img src={e.flags.png} alt={`${e.name.common} flag`} />
+              <img
+                src={e.flags.png}
+                alt={`${e.name.common} flag`}
+                className="flag-img"
+              />
             )}
             <p>Currencies: </p>
             {e.currencies ? (
@@ -58,9 +78,26 @@ const Main = () => {
             ) : (
               <p>No currency information available</p>
             )}
-            <hr />
           </div>
         ))}
+      </div>
+
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="page-button"
+        >
+          Previous
+        </button>
+        <span className="current-page">{currentPage}</span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(filteredCountries.length / itemsPerPage)}
+          className="page-button"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
