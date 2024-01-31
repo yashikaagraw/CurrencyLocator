@@ -6,6 +6,7 @@ const Main = () => {
   const [state, setState] = useState("");
   const [countries, setCountries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 8;
 
   useEffect(() => {
@@ -14,11 +15,14 @@ const Main = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const res = await fetch("https://restcountries.com/v3.1/all");
       const data = await res.json();
       setCountries(data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
   //Filter
@@ -60,35 +64,39 @@ const Main = () => {
           onChange={(e) => setState(e.target.value)}
         />
       </div>
-
       <h1>Country Information</h1>
-      <div className="country-grid">
-        {currentCountries?.map((e, index) => (
-          <div key={index} className="country-card">
-            {e.flags && (
-              <img
-                src={e.flags.png}
-                alt={`${e.name.common} flag`}
-                className="flag-img"
-              />
-            )}
-            <h2>{e.name.common}</h2>
-            <p>Currencies: </p>
-            {e.currencies ? (
-              <>
-                {Object.entries(e.currencies).map(([code, currency]) => (
-                  <div key={code}>
-                    {code} - {currency.name} ({currency.symbol})
-                  </div>
-                ))}
-              </>
-            ) : (
-              <p>No currency information available</p>
-            )}
-          </div>
-        ))}
-      </div>
-
+      {loading ? (
+        <div className="country-grid">
+          <h1>Loading...</h1>
+        </div>
+      ) : (
+        <div className="country-grid">
+          {currentCountries?.map((e, index) => (
+            <div key={index} className="country-card">
+              {e.flags && (
+                <img
+                  src={e.flags.png}
+                  alt={`${e.name.common} flag`}
+                  className="flag-img"
+                />
+              )}
+              <h2>{e.name.common}</h2>
+              <p>Currencies: </p>
+              {e.currencies ? (
+                <>
+                  {Object.entries(e.currencies).map(([code, currency]) => (
+                    <div key={code}>
+                      {code} - {currency.name} ({currency.symbol})
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <p>No currency information available</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       <div className="pagination">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
