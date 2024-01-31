@@ -67,7 +67,7 @@ const Main = () => {
       <h1>Country Information</h1>
       {loading ? (
         <div className="country-grid">
-          <h1>Loading...</h1>
+          <div class="loader"></div>
         </div>
       ) : (
         <div className="country-grid">
