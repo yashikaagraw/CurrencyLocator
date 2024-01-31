@@ -1,55 +1,104 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 .search-input {
-    padding: 15px; 
-    font-size: 18px; 
-    width: 20%; 
-    margin: 10px auto; 
-  }
+  padding: 15px;
+  font-size: 18px;
+  width: 250px;
+  margin: 10px auto;
+  border: none;
+  height: 100%;
+  outline: none;
+}
 
-  
-
+.serchbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 290px;
+  border: 1px solid gray;
+  padding: 0px 10px 0px 10px;
+  border-radius: 30px;
+}
 .country-grid {
+  display: grid;
+  /* grid-template-columns: repeat(3, 1fr); */
+  gap: 20px;
+}
+
+.country-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flag-img {
+  max-width: 100%;
+  height: auto;
+}
+.currency-info {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.page-button {
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.page-button:hover {
+  background-color: #ddd;
+}
+
+.page-button:disabled {
+  cursor: not-allowed;
+  background-color: #ddd;
+}
+
+.current-page {
+  padding: 8px 16px;
+  margin: 0 4px;
+}
+
+@media only screen and (min-width: 320px) {
+  .country-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(1, 1fr);
   }
-  
-  .country-card {
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+@media only screen and (min-width: 768px) {
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .flag-img {
-    max-width: 100%;
-    height: auto;
+  .search-input {
+    width: 500px;
   }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+
+  .serchbar {
+    width: 540px;
+    padding: 0px 20px 0px 20px;
   }
-  
-  .page-button {
-    background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    margin: 0 4px;
-    cursor: pointer;
+}
+
+@media only screen and (min-width: 1024px) {
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  .page-button:hover {
-    background-color: #ddd;
-  }
-  
-  .page-button:disabled {
-    cursor: not-allowed;
-    background-color: #ddd;
-  }
-  
-  .current-page {
-    padding: 8px 16px;
-    margin: 0 4px;
-  }
-  
+}

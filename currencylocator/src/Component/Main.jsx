@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import './main.css';
+import React, { useState, useEffect } from "react";
+import "./main.css";
+import { FaSearch } from "react-icons/fa";
 
 const Main = () => {
-  const [state, setState] = useState('');
+  const [state, setState] = useState("");
   const [countries, setCountries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -13,19 +14,19 @@ const Main = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('https://restcountries.com/v3.1/all');
+      const res = await fetch("https://restcountries.com/v3.1/all");
       const data = await res.json();
       setCountries(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
   //Filter
+
   const filteredCountries = countries.filter((country) =>
     country.currencies
-      ? Object.keys(country.currencies).some(
-          (currencyCode) =>
-            currencyCode.toLowerCase().includes(state.toLowerCase())
+      ? Object.keys(country.currencies).some((currencyCode) =>
+          currencyCode.toLowerCase().includes(state.toLowerCase())
         )
       : false
   );
@@ -40,25 +41,30 @@ const Main = () => {
 
   // Change page
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= Math.ceil(filteredCountries.length / itemsPerPage)) {
+    if (
+      newPage >= 1 &&
+      newPage <= Math.ceil(filteredCountries.length / itemsPerPage)
+    ) {
       setCurrentPage(newPage);
     }
   };
 
   return (
-    <div>
-      <input
-        className="search-input"
-        placeholder="Search by Currency INR, EUR"
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      />
+    <div className="mainContainer">
+      <div className="serchbar">
+        <FaSearch size={40} />
+        <input
+          className="search-input"
+          placeholder="Search by Currency INR, EUR"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
+      </div>
 
       <h1>Country Information</h1>
       <div className="country-grid">
         {currentCountries?.map((e, index) => (
           <div key={index} className="country-card">
-            <h2>{e.name.common}</h2>
             {e.flags && (
               <img
                 src={e.flags.png}
@@ -66,15 +72,16 @@ const Main = () => {
                 className="flag-img"
               />
             )}
+            <h2>{e.name.common}</h2>
             <p>Currencies: </p>
             {e.currencies ? (
-              <ul>
+              <>
                 {Object.entries(e.currencies).map(([code, currency]) => (
-                  <li key={code}>
+                  <div key={code}>
                     {code} - {currency.name} ({currency.symbol})
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </>
             ) : (
               <p>No currency information available</p>
             )}
@@ -93,7 +100,9 @@ const Main = () => {
         <span className="current-page">{currentPage}</span>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === Math.ceil(filteredCountries.length / itemsPerPage)}
+          disabled={
+            currentPage === Math.ceil(filteredCountries.length / itemsPerPage)
+          }
           className="page-button"
         >
           Next
