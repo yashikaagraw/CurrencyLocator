@@ -28,7 +28,11 @@
   /* grid-template-columns: repeat(3, 1fr); */
   gap: 20px;
 }
-/* HTML: <div class="loader"></div> */
+
+/* Loader */
+.loader-container {
+  padding: 200px;
+}
 .loader {
   --d: 22px;
   width: 4px;

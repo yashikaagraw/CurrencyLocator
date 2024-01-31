@@ -61,12 +61,15 @@ const Main = () => {
           className="search-input"
           placeholder="Search by Currency INR, EUR"
           value={state}
-          onChange={(e) => setState(e.target.value)}
+          onChange={(e) => {
+            setState(e.target.value);
+            setCurrentPage(1);
+          }}
         />
       </div>
       <h1>Country Information</h1>
       {loading ? (
-        <div className="country-grid">
+        <div className="country-grid loader-container">
           <div class="loader"></div>
         </div>
       ) : (
@@ -109,6 +112,7 @@ const Main = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={
+            loading ||
             currentPage === Math.ceil(filteredCountries.length / itemsPerPage)
           }
           className="page-button"
