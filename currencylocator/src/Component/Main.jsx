@@ -7,7 +7,7 @@ const Main = () => {
   const [countries, setCountries] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const itemsPerPage = 8;
+  const itemsPerPage = 9;
 
   useEffect(() => {
     fetchData();
